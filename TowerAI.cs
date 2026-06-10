@@ -1,4 +1,9 @@
+using System.Diagnostics;
+using System.Drawing;
+using System.Numerics;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class TowerAI : MonoBehaviour
 {
@@ -85,11 +90,6 @@ public class TowerAI : MonoBehaviour
                 }
             }
         }
-        void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, detectionRange);
-        }
 
         void Attack()
         {
@@ -111,6 +111,7 @@ public class TowerAI : MonoBehaviour
 
             if(fireCooldown <= 0f)
             {
+                if(HasLineOfSight(target))
                 Shoot();
                 fireCooldown = 1f / fireRate;
             }
@@ -150,5 +151,36 @@ public class TowerAI : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+
+        bool HasLineOfSight(Transform target)
+        {   RaycastHit hit;
+        Vector3 direction = (target.position - firePoint.position).normalized;
+        if(Physics.Raycast(firePoint.position, direction, out hit, detectionRange))
+        {
+            if (hit.collder.CompareTag("Enemy"))
+            {
+                Debug.Log("Enemy is in sight:" + hit.collider.name);
+                return true;
+            }
+        }
+        return false;
+        }
+
+        void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, detectionRange);
+
+            
+            
+        }
+
+        void OnDrawGizmos()
+        {
+            Vector3 lineEndPoint = firePoint.position (firePoint.forward * detectionRange);
+            Debug.DrawLine(firePoint.position, lineEndPoint, Color.green);
+        }
     }
+
+    
 
