@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using UnityEngine;
 
 public class TileBehavior : MonoBehaviour
@@ -22,14 +23,19 @@ public class TileBehavior : MonoBehaviour
 
     void OnMouseOver()
     {
-        if (highlightMaterial)
+        if (!TowerBuilder.Instance.HasSelectedTower())
         {
-            _renderer.sharedMaterial = highlightMaterial;
+            return;
         }
+        HighlightTile();
     }
 
     void OnMouseExit()
     {
+        if (!TowerBuilder.Instance.HasSelectedTower())
+        {
+            return;
+        }
         if (!tileTower)
         {
             _renderer.sharedMaterial = originalMaterial;
@@ -40,11 +46,22 @@ public class TileBehavior : MonoBehaviour
     {
         if(!tileTower)
         {
-           if (towerPrefab)
+            
+           if (TowerBuilder.Instance.HasSelectedTower())
             {
-                HighlightTile();
-                var tower = Instantiate(towerPrefab, transform.parent.position, transform.parent.rotation);
-                tileTower = tower;
+                int cost = TowerBuilder.Instance.GetSelectedTowerCost();
+                if (MoneyManager.Instance.BuyTower(cost))
+                {
+                    GameObject towerPrefab = TowerBuilder.Instance.GetSelectedTowerPrefab();
+                    var tower = Instantiate(towerPrefab, transform.parent.position, transform.parent.rotation);
+                    tileTower = tower;
+
+                    TowerBuilder.Instance.ClearSelection();
+                }
+                else
+                {
+                    Debug.LogWarning("Selected tower cannot be afforded...");
+                }
             }
         }
     }

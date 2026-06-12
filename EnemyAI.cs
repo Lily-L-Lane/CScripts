@@ -12,6 +12,7 @@ public class EnemyAI : MonoBehaviour
     public Transform targetBase;
     public EnemyState currentState = EnemyState.Navigate;
     public int baseDamageValue = 10;
+    public int reward = 1;
 
     [Header("Navigate Settings")]
     public Transform turret;
@@ -148,7 +149,7 @@ public class EnemyAI : MonoBehaviour
         {
             Instantiate(destroyPrefab, transform.position, transform.rotation);
         }
-
+        MoneyManager.Instance.GetMoney(reward);
         Destroy(gameObject, 1);
     }
 
