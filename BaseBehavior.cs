@@ -30,6 +30,7 @@ public class BaseBehavior : MonoBehavior
         {
             Debug.log("Game Over");
             health = 0;
+            GameLost();
         }
     }
 
@@ -48,5 +49,9 @@ public class BaseBehavior : MonoBehavior
             } 
             Destory(other.gameObject);
         }
+    }
+    void GameLost()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

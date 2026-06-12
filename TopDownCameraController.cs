@@ -10,12 +10,18 @@ public class TopDownCameraController : MonoBehavior
     public Vector2 panLimitX = new Vector2(-20, 20);
     public Vector2 panLimitZ = new Vector2(-20, 20);
     public Vector2 zoomLimitY = new Vector2(5, 20);
+    bool controlCamera = true;
     void Start()
     {
         
     }
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Escape))
+            controlCamera = !controlCamera;
+            
+        if(!controlCamera)
+            return;
         Vector3 pos = TransformBlock.position;
         if (Input.GetKey("w") || Input.mousePosition.y >= Screen.height - paddingThickness)
         {

@@ -24,7 +24,7 @@ public class TowerBuilder: MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
     void Start()
     {
