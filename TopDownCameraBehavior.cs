@@ -1,8 +1,6 @@
-using System.Numerics;
-using System.Threading.Tasks.Dataflow;
 using UnityEngine;
 
-public class TopDownCameraController : MonoBehavior
+public class TopDownCameraBehavior : MonoBehavior
 {
     public float panSpeed = 20f;
     public float paddingThickness = 20f;
